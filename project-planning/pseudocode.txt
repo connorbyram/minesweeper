@@ -1,0 +1,87 @@
+MINESWEEPER PSEUDOCODE
+ 
+ELEMENTS
+--------------------------
+Title
+
+Control Div
+    FLAG-COUNT
+    GAME-STATUS-BUTTON
+    TIMER
+
+Board
+    SQUAREs
+        EMPTY-SQUARE
+        NUMBER-SQUARE
+        BOMB-SQUARE
+--------------------------
+
+
+
+1) The page loads
+    a) MINESWEEPER is displayed at the top
+    b) a new board is rendered, with blank squares
+        - the placement of 10 BOMBs is randomized across the board
+        - EMPTY-SQUAREs are rendered where there is no bomb inside  
+            or touching the square
+        - NUMBER-SQUAREs are placed in non-bomb squares that are touching
+            adjacent bombs; the number indicates the amount of bombs    
+                the sqare is touching
+    c) a FLAG-COUNT of 10 is displayed in the upper-left;
+    d) the TIMER is displayed in the upper-right
+    e) the GAME-STATUS-BUTTON is in the upper-middle with
+        character indicating the game is ready/in-play
+
+2) The player clicks a SQUARE of their choice:
+    a) IF left-click:
+        - the SQUARE reveals a BOMB-SQUARE, NUMBER-SQUARE, or EMPTY-SQUARE
+        - the TIMER initializes to count up
+    b) IF right-click
+        - the computer checks the FLAG-COUNT
+            IF FLAG-COUNT is 0:
+                - nothing happens
+            ELSE:
+                - a FLAG is placed on that square; (this is utilized to keep track of which
+                SQUAREs the player thinks are BOMB-SQUAREs)
+                - the FLAG-COUNT is reduced by 1
+
+3A) IF a BOMB-SQUARE is clicked the player loses: 
+    a) the GAME-STATUS-BUTTON changes to a character indicating a loss
+    b) the TIMER stops
+    c) the entire BOARD is revealed
+
+    4A) The player clicks the GAME-STATUS-BOTTON to reset the board
+        a) a new BOARD renders 
+        b) the TIMER is reset
+        c) the FLAG-COUNT is reset to 10
+        d) the GAME-STATUS-BUTTON character changes to indicate the game is ready/in-play
+            ***LOOP BACK TO STEP 2***
+
+3B) IF an EMPTY-SQUARE is clicked: 
+    a) the board reveals all adjacent blank squares until it hits a NUMBER 
+       ***LOOP BACK TO STEP 2***
+
+3C) IF a NUMBER-SQUARE is clicked: 
+    a) the BOARD reveals only that square, with a number indicating 
+    the amount of adjacent bombs
+        ***LOOP BACK TO STEP 2***
+
+3D) IF last NON-BOMB SQUARE is clicked:
+    a) the timer stops
+    b) the GAME-STATUS-BUTTON character changes to indicate the player has won
+    
+    4D) The player clicks the GAME-STATUS-BOTTON to reset the board
+        a) a new BOARD renders 
+        b) the TIMER is reset
+        c) the FLAG-COUNT is reset to 10
+        d) the GAME-STATUS-BUTTON character changes to indicate the game is ready/in-play
+            ***LOOP BACK TO STEP 2***
+
+
+
+
+NOTES:
+Array of arrays with object representing each square
+    is bomb?
+    is flag?
+    flood number
