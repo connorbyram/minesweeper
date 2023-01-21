@@ -2,8 +2,9 @@
 
 
 /*----- app's state (variables) -----*/
-let 
-let result; //if player choice is empty or bomb
+let board;
+let win;
+
 
 /*----- cached element references -----*/
 
@@ -12,4 +13,8 @@ let result; //if player choice is empty or bomb
 
 
 /*----- functions -----*/
+
+// board   
+//     is mine?
+//     is flagged ? false
 
