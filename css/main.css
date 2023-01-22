@@ -11,6 +11,14 @@ body {
     align-items: center;
 }
 
+#game-info {
+    width: 50vmin;
+    text-align: center;
+    border: 2px solid black;
+    padding: 20px 30px;
+    margin-bottom: 20px;
+}
+
 #hud {
     display: flex;
     width: 50vmin;
