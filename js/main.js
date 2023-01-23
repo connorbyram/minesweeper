@@ -1,48 +1,92 @@
 /*----- constants -----*/
-
+const BOARD_ROWS = 16;
+const BOARD_COLS = 16;
+let MINE_COUNT = 40;
 
 /*----- app's state (variables) -----*/
 let board;
 let win;
 
 
-/*----- cached element references -----*/
 
+/*----- cached element references -----*/
+let boardEl = document.getElementById(board);
+let squareEl = document.querySelector(`board > div`)
 
 /*----- classes -----*/
-class Pedal {
-    constructor() {}
+class Square {
+    constructor(rowIdx, colIdx) {
+        this.isMine = false; //TODO randomize
+        this.isRevealed = false;
+        this.isFlagged = false;
+        this.adjMineCount = null;
+        this.rowIdx;
+        this.colIdx;
+    }
 
-   //is distortion?
-    //if no:
-        //if adj === 0 reveal & flood
-        //if adj
+    // computeAdjMineCount() {
+    //     let neighbors = []; // r+1 c+0, r+1 c+1, r+0 c+1, r-1 c+1, r-1 c+0, r-1 c-1, r+0 c-1, r+1 c-1
+    //     // TODO: push each neighboring cell into neighbors
+    //     let count = 0;
+    //     // TODO: Loop through the cells in the neighbors & increment count if cell is a mine
+    //     this.adjMineCount = count;
+    // }
+
+    render() {
+        // if(this.isMine = true) {
+        //     document.getElementById(`r${this.rowIdx}c${this.colIdx}`).style.backgroundColor = 'black';
+        // }
+        console.log("square rendered!") ; 
+    }
+    
 }
 
-/*----- event listeners -----*/
+// new MinesweeperGame {
+//     constructor() {}
+// }
 
+
+
+/*----- event listeners -----*/
+// board.addEventListener('click', handleClick);
 
 /*----- functions -----*/
 init();
-
+console.log(board);
 function init() {
-    board = []; //randomize distortion-pedal placement, calculate adjacent square #'s, identify 'empty' squares
-    win = nill;
-    render();
+    board = [];
+    for (let rowIdx = 0; rowIdx < BOARD_ROWS; rowIdx++) {
+        board[rowIdx] = [];
+        for (let colIdx = 0; colIdx < BOARD_COLS; colIdx++) {
+            board[rowIdx].push(new Square(rowIdx, colIdx))
+        };
+    //generate bombs
+}
+    render ();
+    generateBombs (); 
 }
 
-function render() {
-    renderBoard(); //iterate through squares
-    renderFlagCount();
-    renderTimer();
+function handleClick() {
 
 }
 
-function renderBoard() {}
-function renderFlagCount() {}
-function renderTimer() {}
+function generateBombs () {
+   while (MINE_COUNT > 0) {
+       let rndRow = Math.floor(Math.random() * BOARD_ROWS);
+       let rndCol = Math.floor(Math.random() * BOARD_COLS);
+       console.log(rndRow,rndCol);
+       if (board[rndRow][rndCol].isMine === false) {
+           board[rndRow][rndCol].isMine = true;
+           MINE_COUNT--;
+           document.getElementById(`r${rndRow}c${rndCol}`).style.backgroundColor = 'black';
+       }
+   };
+}
 
-// board   
-//     is mine?
-//     is flagged ? false
-
+function render () {
+    board.forEach(function(rowArr) {
+        rowArr.forEach(function(square) {
+            square.render();
+        });
+    });
+}
