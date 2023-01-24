@@ -113,12 +113,20 @@ function getAdjSquares(rowIdx, colIdx) {
 }
 
 function calcAdjMines (rowIdx, colIdx) {
-    let adjSquares = getAdjSquares(rowIdx, colIdx);
-    adjSquares.forEach(function() {
-        if (adjSquares.isMine === true) {
-            board[rowIdx][colIdx].adjMineCount + 1
-        } else {board[rowIdx][colIdx].adjMineCount + 0}
+    const homeSquare = board[rowIdx][colIdx];
+    const adjSquares = getAdjSquares(rowIdx,colIdx);
+    adjSquares.forEach(function(adjSquare) {
+        if (adjSquare.isMine === true) {
+            homeSquare.adjMineCount = homeSquare.adjMineCount + 1;
+        };
     });
+    return adjSquares;
+    //     let adjSquares = getAdjSquares(rowIdx, colIdx);
+//     adjSquares.forEach(function() {
+//         if (adjSquares.isMine === true) {
+//             board[rowIdx][colIdx].adjMineCount + 1
+//         } else {board[rowIdx][colIdx].adjMineCount + 0}
+//     });
 }
 
 // function calcAdjMines (rowIdx, colIdx) {
