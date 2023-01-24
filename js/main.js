@@ -19,18 +19,10 @@ class Square {
         this.isMine = false; //TODO randomize
         this.isRevealed = false;
         this.isFlagged = false;
-        this.adjMineCount = null;
+        this.adjMineCount = 0;
         this.rowIdx;
         this.colIdx;
     }
-
-    // computeAdjMineCount() {
-    //     let neighbors = []; // r+1 c+0, r+1 c+1, r+0 c+1, r-1 c+1, r-1 c+0, r-1 c-1, r+0 c-1, r+1 c-1
-    //     // TODO: push each neighboring cell into neighbors
-    //     let count = 0;
-    //     // TODO: Loop through the cells in the neighbors & increment count if cell is a mine
-    //     this.adjMineCount = count;
-    // }
 
     render() {
         // if(this.isMine = true) {
@@ -65,65 +57,98 @@ function init() {
     //generate bombs
 }
     generateBombs ();
-    board.forEach(function(rowArr, rowIdx) {
-        rowArr.forEach(function(Square, colIdx) {
-            Square.adjMineCount += countAdjBombs(rowIdx - 1,colIdx - 1);
-            Square.adjMineCount += countAdjBombs(rowIdx - 1,colIdx - 0);
-            Square.adjMineCount += countAdjBombs(rowIdx - 1,colIdx + 1);
-            Square.adjMineCount += countAdjBombs(rowIdx - 0,colIdx +1);
-            Square.adjMineCount += countAdjBombs(rowIdx + 1,colIdx + 1);
-            Square.adjMineCount += countAdjBombs(rowIdx + 1,colIdx - 0);
-            Square.adjMineCount += countAdjBombs(rowIdx + 1,colIdx - 1);
-            Square.adjMineCount += countAdjBombs(rowIdx - 0,colIdx - 1); 
-        });
-        console.log(board.adjMineCount);
-    });
+    // addAdjMineCount ();
     render ();
 }
 
 function handleClick(evt) {
-    let evtSplit = evt.target.id.split(" ");
-    let rowIdx = evtSplit[0].replace("r", "");
-    let colIdx = evtSplit[1].replace("c", "");
+    let idSplit = evt.target.id.split(" ");
+    let rowIdx = idSplit[0].replace("r", "");
+    let colIdx = idSplit[1].replace("c", "");
     if (board[rowIdx][colIdx].isFlagged === true) return;
     if (board[rowIdx][colIdx].isMine === true) {
         // lose();
-        console.log('boom');
+        // console.log('boom');
     };
     if (board[rowIdx][colIdx].isMine === false) {
         // reveal();
-        console.log('safe');
+        // console.log('safe');
     };
 }
 function handleRightClick(evt) {
-    let evtSplit = evt.target.id.split(" ");
-    let rowIdx = evtSplit[0].replace("r", "");
-    let colIdx = evtSplit[1].replace("c", "");
+    let idSplit = evt.target.id.split(" ");
+    let rowIdx = idSplit[0].replace("r", "");
+    let colIdx = idSplit[1].replace("c", "");
     let flagShow = document.getElementById(`r${rowIdx} c${colIdx}`);
     if (board[rowIdx][colIdx].isFlagged === false) {
         board[rowIdx][colIdx].isFlagged = true;
         flagShow.style.backgroundColor = 'red';
     } else {
         board[rowIdx][colIdx].isFlagged = false;
+        flagShow.style.backgroundColor = 'white';
     };
 }
 
-// for (let rowIdx = 0; rowIdx < BOARD_ROWS; rowIdx++){
-//     for (let colIdx = 0; colIdx < BOARD_COLS; colIdx++) {
-//         function checkDiagonalMineNWSE(colIdx, rowIdx) {
-//           const adjCountNW = countAdjacent(colIdx, rowIdx, -1, 1)
-//           const adjCountSE = countAdjacent(colIdx, rowIdx, 1, -1)
+// function countAdjMines(row, col) {
+//     // guards
+//     if (row < 0 || row > 15) return 0;
+//     if (col < 0 || col > 15) return 0;
+//     // check adj square
+//     if (board[row][col].isMine === true) {
+//         return 1;
+//     } else return 0;
+// }
 
-
-function countAdjBombs(row, col) {
-    // guards
-    if (row < 0 || row > 15) return 0;
-    if (col < 0 || col > 15) return 0;
-    // check adj square
-    if (board[row][col].isMine === true) {
-        return 1;
-    } else return 0;
+function getAdjSquares(rowIdx, colIdx) {
+    const adjSquares = [];
+    for (let rowOffset = -1; rowOffset < 2; rowOffset++) {
+        for (let colOffset = -1; colOffset < 2; colOffset++) {
+            const adjRow = rowIdx + rowOffset;
+            const adjCol = colIdx + colOffset;
+            if (!(adjRow === rowIdx && adjCol === colIdx) && adjRow >= 0 && adjRow < board.length && adjCol >= 0 && adjCol < board[0].length) 
+            adjSquares.push(board[adjRow][adjCol]);
+        }
+    };
+    return adjSquares;
 }
+
+function calcAdjMines (rowIdx, colIdx) {
+    let adjSquares = getAdjSquares(rowIdx, colIdx);
+    adjSquares.forEach(function() {
+        if (adjSquares.isMine === true) {
+            board[rowIdx][colIdx].adjMineCount + 1
+        } else {board[rowIdx][colIdx].adjMineCount + 0}
+    });
+}
+
+// function calcAdjMines (rowIdx, colIdx) {
+//     for (let rowIdx = 0; rowIdx < BOARD_ROWS; rowIdx++) {
+//         for (let colIdx = 0; colIdx < BOARD_COLS; colIdx++) {
+//             const square = board[rowIdx][colIdx];
+//             square.adjSquares = getAdjSquares(square);
+//             square.adjMineCount = square.adjSquares.reduce((count, square) => square.isMine
+//              ? count + 1 : count, 0);
+//         console.log(square);
+
+//         }
+//     }
+// }
+
+// function addAdjMineCount () {
+//     board.forEach(function(rowArr, rowIdx) {
+//     rowArr.forEach(function(Square, colIdx) {
+//         Square.adjMineCount += countAdjMines(rowIdx - 1,colIdx - 1);
+//         Square.adjMineCount += countAdjMines(rowIdx - 1,colIdx - 0);
+//         Square.adjMineCount += countAdjMines(rowIdx - 1,colIdx + 1);
+//         Square.adjMineCount += countAdjMines(rowIdx - 0,colIdx +1);
+//         Square.adjMineCount += countAdjMines(rowIdx + 1,colIdx + 1);
+//         Square.adjMineCount += countAdjMines(rowIdx + 1,colIdx - 0);
+//         Square.adjMineCount += countAdjMines(rowIdx + 1,colIdx - 1);
+//         Square.adjMineCount += countAdjMines(rowIdx - 0,colIdx - 1); 
+//         console.log(board.adjMineCount);
+//     });
+//     });
+// }
 
 function generateBombs () {
    while (MINE_COUNT > 0) {
