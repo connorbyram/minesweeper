@@ -49,6 +49,7 @@ class Square {
 
 /*----- event listeners -----*/
 boardEl.addEventListener('click', handleClick);
+boardEl.addEventListener('contextmenu', handleRightClick);
 
 
 /*----- functions -----*/
@@ -63,9 +64,21 @@ function init() {
         };
     //generate bombs
 }
-    render ();
     generateBombs ();
-    // countAdjBombs (); 
+    board.forEach(function(rowArr, rowIdx) {
+        rowArr.forEach(function(Square, colIdx) {
+            Square.adjMineCount += countAdjBombs(rowIdx - 1,colIdx - 1);
+            Square.adjMineCount += countAdjBombs(rowIdx - 1,colIdx - 0);
+            Square.adjMineCount += countAdjBombs(rowIdx - 1,colIdx + 1);
+            Square.adjMineCount += countAdjBombs(rowIdx - 0,colIdx +1);
+            Square.adjMineCount += countAdjBombs(rowIdx + 1,colIdx + 1);
+            Square.adjMineCount += countAdjBombs(rowIdx + 1,colIdx - 0);
+            Square.adjMineCount += countAdjBombs(rowIdx + 1,colIdx - 1);
+            Square.adjMineCount += countAdjBombs(rowIdx - 0,colIdx - 1); 
+        });
+        console.log(board.adjMineCount);
+    });
+    render ();
 }
 
 function handleClick(evt) {
@@ -82,6 +95,18 @@ function handleClick(evt) {
         console.log('safe');
     };
 }
+function handleRightClick(evt) {
+    let evtSplit = evt.target.id.split(" ");
+    let rowIdx = evtSplit[0].replace("r", "");
+    let colIdx = evtSplit[1].replace("c", "");
+    let flagShow = document.getElementById(`r${rowIdx} c${colIdx}`);
+    if (board[rowIdx][colIdx].isFlagged === false) {
+        board[rowIdx][colIdx].isFlagged = true;
+        flagShow.style.backgroundColor = 'red';
+    } else {
+        board[rowIdx][colIdx].isFlagged = false;
+    };
+}
 
 // for (let rowIdx = 0; rowIdx < BOARD_ROWS; rowIdx++){
 //     for (let colIdx = 0; colIdx < BOARD_COLS; colIdx++) {
@@ -90,12 +115,15 @@ function handleClick(evt) {
 //           const adjCountSE = countAdjacent(colIdx, rowIdx, 1, -1)
 
 
-// function countAdjBombs() {
-    
-//     (board[rowIdx + 1][colIdx + 1].isMine === true) {
-//         board[rowIdx][colIdx].adjMineCount + 1;
-//     };
-// }
+function countAdjBombs(row, col) {
+    // guards
+    if (row < 0 || row > 15) return 0;
+    if (col < 0 || col > 15) return 0;
+    // check adj square
+    if (board[row][col].isMine === true) {
+        return 1;
+    } else return 0;
+}
 
 function generateBombs () {
    while (MINE_COUNT > 0) {
