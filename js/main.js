@@ -10,7 +10,7 @@ let win;
 
 
 /*----- cached element references -----*/
-let boardEl = document.getElementById(board);
+let boardEl = document.getElementById('board');
 let squareEl = document.querySelector(`board > div`)
 
 /*----- classes -----*/
@@ -48,7 +48,8 @@ class Square {
 
 
 /*----- event listeners -----*/
-// board.addEventListener('click', handleClick);
+boardEl.addEventListener('click', handleClick);
+
 
 /*----- functions -----*/
 init();
@@ -63,22 +64,48 @@ function init() {
     //generate bombs
 }
     render ();
-    generateBombs (); 
+    generateBombs ();
+    // countAdjBombs (); 
 }
 
-function handleClick() {
-
+function handleClick(evt) {
+    let evtSplit = evt.target.id.split(" ");
+    let rowIdx = evtSplit[0].replace("r", "");
+    let colIdx = evtSplit[1].replace("c", "");
+    if (board[rowIdx][colIdx].isFlagged === true) return;
+    if (board[rowIdx][colIdx].isMine === true) {
+        // lose();
+        console.log('boom');
+    };
+    if (board[rowIdx][colIdx].isMine === false) {
+        // reveal();
+        console.log('safe');
+    };
 }
+
+// for (let rowIdx = 0; rowIdx < BOARD_ROWS; rowIdx++){
+//     for (let colIdx = 0; colIdx < BOARD_COLS; colIdx++) {
+//         function checkDiagonalMineNWSE(colIdx, rowIdx) {
+//           const adjCountNW = countAdjacent(colIdx, rowIdx, -1, 1)
+//           const adjCountSE = countAdjacent(colIdx, rowIdx, 1, -1)
+
+
+// function countAdjBombs() {
+    
+//     (board[rowIdx + 1][colIdx + 1].isMine === true) {
+//         board[rowIdx][colIdx].adjMineCount + 1;
+//     };
+// }
 
 function generateBombs () {
    while (MINE_COUNT > 0) {
        let rndRow = Math.floor(Math.random() * BOARD_ROWS);
        let rndCol = Math.floor(Math.random() * BOARD_COLS);
-       console.log(rndRow,rndCol);
+    //    console.log(rndRow,rndCol);
        if (board[rndRow][rndCol].isMine === false) {
            board[rndRow][rndCol].isMine = true;
            MINE_COUNT--;
-           document.getElementById(`r${rndRow}c${rndCol}`).style.backgroundColor = 'black';
+           document.getElementById(`r${rndRow} c${rndCol}`).style.backgroundColor = 'black';
        }
    };
 }
