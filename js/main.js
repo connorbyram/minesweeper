@@ -29,9 +29,9 @@ class Square {
         // if(this.isMine = true) {
         //     document.getElementById(`r${this.rowIdx}c${this.colIdx}`).style.backgroundColor = 'black';
         // }
-        console.log("square rendered!") ; 
+        console.log("square rendered!");
     }
-    
+
 }
 
 // new MinesweeperGame {
@@ -56,32 +56,31 @@ function init() {
         for (let colIdx = 0; colIdx < BOARD_COLS; colIdx++) {
             board[rowIdx].push(new Square(rowIdx, colIdx))
         };
-}
+    }
 
-    generateBombs ();
-    board.forEach(function(rowArr, rowIdx) {
-        rowArr.forEach(function(square, colIdx) {
-            calcAdjMines(rowIdx,colIdx);
+    generateBombs();
+    board.forEach(function (rowArr, rowIdx) {
+        rowArr.forEach(function (square, colIdx) {
+            calcAdjMines(square, rowIdx, colIdx);
         });
     });
 
-    render ();
+    render();
 }
 
 function handleClick(evt) {
     let idSplit = evt.target.id.split(" ");
     let rowIdx = idSplit[0].replace("r", "");
     let colIdx = idSplit[1].replace("c", "");
-    if (board[rowIdx][colIdx].isFlagged === true) return; // && isRevealed === true
-    if (board[rowIdx][colIdx].isMine === true) {
-        board[rowIdx][colIdx].isRevealed = true;
+    let clickedSqr = board[rowIdx][colIdx];
+    if (clickedSqr.isFlagged === true) return; // && isRevealed === true
+    if (clickedSqr.isMine === true) {
+        clickedSqr.isRevealed = true;
         lose();
-    };
-    if (board[rowIdx][colIdx].isMine === false) {
-        board[rowIdx][colIdx].isRevealed = true;
-        if (board[rowIdx][colIdx].adjMineCount === 0) {
-            flood(5, 5);
-            // console.log('empty');
+    } else {
+        clickedSqr.isRevealed = true;
+        if (clickedSqr.adjMineCount === 0) {
+            flood(clickedSqr);
         }
     }; // if mine=false && adjMineCount = 0 => reveal(); flood();
 
@@ -104,11 +103,11 @@ function handleRightClick(evt) {
 
 
 function lose() {
-    board.forEach(function(rowArr, rowIdx) {
-        rowArr.forEach(function(square, colIdx) {
+    board.forEach(function (rowArr, rowIdx) {
+        rowArr.forEach(function (square, colIdx) {
             square.isRevealed = true;
         });
-        
+
     });
 }
 
@@ -119,58 +118,57 @@ function getAdjSquares(rowIdx, colIdx) {
         for (let colOffset = -1; colOffset < 2; colOffset++) {
             const adjRow = rowIdx + rowOffset;
             const adjCol = colIdx + colOffset;
-            if (!(adjRow === rowIdx && adjCol === colIdx) && adjRow >= 0 && adjRow < board.length && adjCol >= 0 && adjCol < board[0].length) 
-            adjSquares.push(board[adjRow][adjCol]);
+            if (!(adjRow === rowIdx && adjCol === colIdx) && adjRow >= 0 && adjRow < board.length && adjCol >= 0 && adjCol < board[0].length)
+                adjSquares.push(board[adjRow][adjCol]);
         }
     };
     return adjSquares;
 }
 
 
-function calcAdjMines(rowIdx, colIdx) {
-    const homeSquare = board[rowIdx][colIdx];
-    const adjSquares = getAdjSquares(rowIdx,colIdx);
-    adjSquares.forEach(function(adjSquare) {
+function calcAdjMines(square, rowIdx, colIdx) {
+    square.adjSquares = getAdjSquares(rowIdx, colIdx);
+    square.adjSquares.forEach(function (adjSquare) {
         if (adjSquare.isMine === true) {
-            homeSquare.adjMineCount = homeSquare.adjMineCount + 1;
+            square.adjMineCount = square.adjMineCount + 1;
         };
     });
-    if (homeSquare.adjMineCount > 0) {
-        document.getElementById(`r${rowIdx} c${colIdx}`).innerHTML = `${homeSquare.adjMineCount}`;
+    if (square.adjMineCount > 0) {
+        document.getElementById(`r${rowIdx} c${colIdx}`).innerHTML = `${square.adjMineCount}`;//render
     }
-    return adjSquares;
 }
 
-function flood(rowIdx, colIdx) {
-    // const homeSquare = board[rowIdx][colIdx];
-    const adjSquares = getAdjSquares(rowIdx, colIdx);
-    console.log(adjSquares);
+function flood(clickedSqr) {
+    // const adjSquares = getAdjSquares(rowIdx, colIdx);
+    console.log(clickedSqr.adjSquares);
     // return adjSquares;
-    adjSquares.forEach(function(adjSquare) {
-        if (adjSquare.isMine === false) {
-            adjSquare.isRevealed = true;
-        };
-    });
+    clickedSqr.isRevealed = true;
+    clickedSqr.isFlagged = false;
+    if (clickedSqr.adjMineCount === 0) {
+        clickedSqr.adjSquares.forEach(function (adjSquare) {
+            if (!adjSquare.isMine && !adjSquare.isRevealed) flood(adjSquare); 
+        });   
+    }
 }
 
-function generateBombs () {
-   while (MINE_COUNT > 0) {
-       let rndRow = Math.floor(Math.random() * BOARD_ROWS);
-       let rndCol = Math.floor(Math.random() * BOARD_COLS);
-    //    console.log(rndRow,rndCol);
-       if (board[rndRow][rndCol].isMine === false) {
-           board[rndRow][rndCol].isMine = true;
-           MINE_COUNT--;
-       }
-   };
+function generateBombs() {
+    while (MINE_COUNT > 0) {
+        let rndRow = Math.floor(Math.random() * BOARD_ROWS);
+        let rndCol = Math.floor(Math.random() * BOARD_COLS);
+        //    console.log(rndRow,rndCol);
+        if (board[rndRow][rndCol].isMine === false) {
+            board[rndRow][rndCol].isMine = true;
+            MINE_COUNT--;
+        }
+    };
 }
 
-function render () {
-    board.forEach(function(rowArr, rowIdx) {
-        rowArr.forEach(function(square, colIdx){
+function render() {
+    board.forEach(function (rowArr, rowIdx) {
+        rowArr.forEach(function (square, colIdx) {
             let squareDiv = document.getElementById(`r${rowIdx} c${colIdx}`);
             if (square.isFlagged === true) {
-                squareDiv.classList.add('flagged'); 
+                squareDiv.classList.add('flagged');
             } else if (square.isFlagged === false) {
                 squareDiv.classList.remove('flagged');
                 if (square.isRevealed === false) {
