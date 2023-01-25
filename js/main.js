@@ -76,9 +76,11 @@ function handleClick(evt) {
     let colIdx = idSplit[1].replace("c", "");
     if (board[rowIdx][colIdx].isFlagged === true) return; // && isRevealed === true
     if (board[rowIdx][colIdx].isMine === true) {
+        board[rowIdx][colIdx].isRevealed = true;
         // lose();
     };
     if (board[rowIdx][colIdx].isMine === false) {
+        board[rowIdx][colIdx].isRevealed = true;
         // reveal();
     }; // if mine=false && adjMineCount = 0 => reveal(); flood();
 
@@ -89,6 +91,7 @@ function handleRightClick(evt) {
     let rowIdx = idSplit[0].replace("r", "");
     let colIdx = idSplit[1].replace("c", "");
     let flagShow = document.getElementById(`r${rowIdx} c${colIdx}`);
+    if (board[rowIdx][colIdx].isRevealed === true) return;
     if (board[rowIdx][colIdx].isFlagged === false) {
         board[rowIdx][colIdx].isFlagged = true;
     } else {
@@ -133,7 +136,6 @@ function generateBombs () {
        if (board[rndRow][rndCol].isMine === false) {
            board[rndRow][rndCol].isMine = true;
            MINE_COUNT--;
-           document.getElementById(`r${rndRow} c${rndCol}`).style.backgroundColor = 'black';
        }
    };
 }
@@ -141,15 +143,38 @@ function generateBombs () {
 function render () {
     board.forEach(function(rowArr, rowIdx) {
         rowArr.forEach(function(square, colIdx){
+            let squareDiv = document.getElementById(`r${rowIdx} c${colIdx}`);
             if (square.isFlagged === true) {
-                document.getElementById(`r${rowIdx} c${colIdx}`).classList.add('flagged'); //later to be switched by class
+                squareDiv.classList.add('flagged'); 
+            } else if (square.isFlagged === false) {
+                squareDiv.classList.remove('flagged');
+                if (square.isRevealed === false) {
+                    squareDiv.classList.add('covered');
+                } else {
+                    squareDiv.classList.remove('covered');
+                    squareDiv.style.backgroundColor = 'red';
+                    if (square.isMine === true) {
+                        squareDiv.classList.add('bomb');
+                    };
+                    if (square.adjMineCount === 0) {
+                        squareDiv.style.backgroundColor = 'yellow';
+                    };
+                }
             };
-
+            
+            // if (square.isRevealed === false) {
+            //     document.getElementById(`r${rowIdx} c${colIdx}`).classList.add('covered');
+            //     // return; 
+            // } else (if.isRevealed === true){
+            //     if (square.isMine === true) {
+            //         document.getElementById(`r${rowIdx} c${colIdx}`).classList.add('bomb');
+            //     } else {
+            //         document.getElementById(`r${rowIdx} c${colIdx}`).classList.add('revealed');
+            //     }
+            // };
+            // if (square.isRevealed === true) {
+            //     document.getElementById(`r${rowIdx} c${colIdx}`).classList.add('revealed');
+            // };
         });
     })
-    // board.forEach(function(rowArr) {
-    //     rowArr.forEach(function(square) {
-    //         square.render();
-    //     });
-    // });
 }
