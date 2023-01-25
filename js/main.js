@@ -12,6 +12,7 @@ let win;
 /*----- cached element references -----*/
 let boardEl = document.getElementById('board');
 let squareEl = document.querySelector(`board > div`)
+let resetEl = document.querySelector('button')
 
 /*----- classes -----*/
 class Square {
@@ -42,6 +43,7 @@ class Square {
 /*----- event listeners -----*/
 boardEl.addEventListener('click', handleClick);
 boardEl.addEventListener('contextmenu', handleRightClick);
+resetEl.addEventListener('click', init);
 
 
 /*----- functions -----*/
@@ -72,15 +74,15 @@ function handleClick(evt) {
     let idSplit = evt.target.id.split(" ");
     let rowIdx = idSplit[0].replace("r", "");
     let colIdx = idSplit[1].replace("c", "");
-    if (board[rowIdx][colIdx].isFlagged === true) return;
+    if (board[rowIdx][colIdx].isFlagged === true) return; // && isRevealed === true
     if (board[rowIdx][colIdx].isMine === true) {
         // lose();
-        // console.log('boom');
     };
     if (board[rowIdx][colIdx].isMine === false) {
         // reveal();
-        // console.log('safe');
-    };
+    }; // if mine=false && adjMineCount = 0 => reveal(); flood();
+
+    render();
 }
 function handleRightClick(evt) {
     let idSplit = evt.target.id.split(" ");
@@ -89,11 +91,11 @@ function handleRightClick(evt) {
     let flagShow = document.getElementById(`r${rowIdx} c${colIdx}`);
     if (board[rowIdx][colIdx].isFlagged === false) {
         board[rowIdx][colIdx].isFlagged = true;
-        flagShow.style.backgroundColor = 'red';
     } else {
         board[rowIdx][colIdx].isFlagged = false;
-        flagShow.style.backgroundColor = 'white';
     };
+
+    render();
 }
 
 function getAdjSquares(rowIdx, colIdx) {
@@ -137,9 +139,17 @@ function generateBombs () {
 }
 
 function render () {
-    board.forEach(function(rowArr) {
-        rowArr.forEach(function(square) {
-            square.render();
+    board.forEach(function(rowArr, rowIdx) {
+        rowArr.forEach(function(square, colIdx){
+            if (square.isFlagged === true) {
+                document.getElementById(`r${rowIdx} c${colIdx}`).classList.add('flagged'); //later to be switched by class
+            };
+
         });
-    });
+    })
+    // board.forEach(function(rowArr) {
+    //     rowArr.forEach(function(square) {
+    //         square.render();
+    //     });
+    // });
 }

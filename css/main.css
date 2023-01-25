@@ -55,7 +55,11 @@ button {
     cursor: pointer;
 }
 
-.bomb{}
-.flag{}
-.covered{}
-.revealed{}
+/* .bomb{} */
+.flagged {
+    background-image: url('/images/flag.png');
+    background-size: contain;
+    color: rgba(0, 0, 0, 0);
+}
+/* .covered{}
+.revealed{} */
