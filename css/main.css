@@ -40,7 +40,7 @@ button {
 }
 
 #board {
-    height: 50vmin;
+    height: auto;
     width: 50vmin;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -50,5 +50,12 @@ button {
 
 #board > div {
     border: 1px solid black;
+    padding: 5px;
+    text-align: center;
     cursor: pointer;
 }
+
+.bomb{}
+.flag{}
+.covered{}
+.revealed{}
