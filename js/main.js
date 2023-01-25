@@ -57,16 +57,25 @@ function init() {
             board[rowIdx].push(new Square(rowIdx, colIdx))
         };
 }
-    generateBombs ();
-    // board.forEach(function(rowIdx, colIdx){
-    //     getAdjSquares(rowIdx, colIdx);
+    // board.forEach(function(rowArr, rowIdx) {
+    //     rowArr.forEach(function(square, colIdx) {
+    //        let sqr = board[rowIdx][colIdx];
+    //        sqr.isFlagged = false;
+    //        sqr.isMine = false;
+    //        sqr.isRevealed = false;
+    //        sqr.adjMineCount = 0;
+    //     //    square.isRevealed = false;
 
+    //     });
     // });
+
+    generateBombs ();
     board.forEach(function(rowArr, rowIdx) {
         rowArr.forEach(function(square, colIdx) {
             calcAdjMines(rowIdx,colIdx);
         });
     });
+
     render ();
 }
 
