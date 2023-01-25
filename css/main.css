@@ -59,13 +59,19 @@ button {
 
 #board > div {
     border: 1px solid black;
+    background-color: none;
+    background-size: contain;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
     padding: 5px;
-    text-align: center;
     cursor: pointer;
 
 }
 
-.covered {
+/* .covered {
     background-color: white;
     color:rgba(0, 0, 0, 0);
 }
@@ -84,4 +90,4 @@ button {
     background-image: url('../images/flag.png');
     background-size: contain;
     color: rgba(0, 0, 0, 0) !important;
-}
+} */

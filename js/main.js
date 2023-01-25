@@ -2,6 +2,8 @@
 const BOARD_ROWS = 16;
 const BOARD_COLS = 16;
 let MINE_COUNT = 40;
+const flag = 'images/flag.png'
+const bomb = 'images/bomb.png'
 
 /*----- app's state (variables) -----*/
 let board;
@@ -119,7 +121,7 @@ function calcAdjMines(square, rowIdx, colIdx) {
         };
     });
     if (square.adjMineCount > 0) {
-        document.getElementById(`r${rowIdx} c${colIdx}`).innerHTML = `${square.adjMineCount}`;//render
+        // document.getElementById(`r${rowIdx} c${colIdx}`).innerHTML = `${square.adjMineCount}`;
     }
 }
 
@@ -145,24 +147,28 @@ function generateBombs() {
     };
 }
 
+
 function render() {
     board.forEach(function (rowArr, rowIdx) {
         rowArr.forEach(function (square, colIdx) {
             let squareDiv = document.getElementById(`r${rowIdx} c${colIdx}`);
-            if (square.isFlagged === true) {
-                squareDiv.classList.add('flagged');
-            } else if (square.isFlagged === false) {
-                squareDiv.classList.remove('flagged');
-                if (square.isRevealed === false) {
-                    squareDiv.classList.add('covered');
+            if (square.isFlagged) {
+                squareDiv.style.backgroundImage = `url(${flag})`;
+                squareDiv.style.color = "rgba(0, 0, 0, 0)";
+            } else {
+                squareDiv.style.backgroundImage = "none";
+                if (!square.isRevealed) {
+                    squareDiv.style.backgroundColor = "green";
+                    squareDiv.style.color = "rgba(0, 0, 0, 0)"
                 } else {
-                    squareDiv.classList.remove('covered');
-                    squareDiv.style.backgroundColor = 'red';
-                    if (square.isMine === true) {
-                        squareDiv.classList.add('bomb');
+                    squareDiv.style.backgroundColor = "grey";
+                    if (square.isMine) {
+                        squareDiv.style.backgroundImage = `url(${bomb})`;
                     };
-                    if (square.adjMineCount === 0) {
-                        squareDiv.style.backgroundColor = 'yellow';
+                    if (square.adjMineCount > 0) {
+                        squareDiv.style.backgroundColor = 'white';
+                        squareDiv.style.color = "rgba(0, 0, 0, 1)"
+                        document.getElementById(`r${rowIdx} c${colIdx}`).innerHTML = `${square.adjMineCount}`;
                     };
                 }
             };
