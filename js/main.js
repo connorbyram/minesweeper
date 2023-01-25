@@ -86,7 +86,7 @@ function handleClick(evt) {
     if (board[rowIdx][colIdx].isFlagged === true) return; // && isRevealed === true
     if (board[rowIdx][colIdx].isMine === true) {
         board[rowIdx][colIdx].isRevealed = true;
-        // lose();
+        lose();
     };
     if (board[rowIdx][colIdx].isMine === false) {
         board[rowIdx][colIdx].isRevealed = true;
@@ -108,6 +108,14 @@ function handleRightClick(evt) {
     };
 
     render();
+}
+
+function lose() {
+    board.forEach(function(rowArr, rowIdx) {
+        rowArr.forEach(function(square, colIdx) {
+            square.isRevealed = true;
+        });
+    });
 }
 
 function getAdjSquares(rowIdx, colIdx) {
