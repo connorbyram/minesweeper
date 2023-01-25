@@ -25,19 +25,8 @@ class Square {
         this.colIdx = colIdx;
     }
 
-    render() {
-        // if(this.isMine = true) {
-        //     document.getElementById(`r${this.rowIdx}c${this.colIdx}`).style.backgroundColor = 'black';
-        // }
-        console.log("square rendered!");
-    }
-
+    render() {}
 }
-
-// new MinesweeperGame {
-//     constructor() {}
-// }
-
 
 
 /*----- event listeners -----*/
@@ -73,7 +62,7 @@ function handleClick(evt) {
     let rowIdx = idSplit[0].replace("r", "");
     let colIdx = idSplit[1].replace("c", "");
     let clickedSqr = board[rowIdx][colIdx];
-    if (clickedSqr.isFlagged === true) return; // && isRevealed === true
+    if (clickedSqr.isFlagged === true) return;
     if (clickedSqr.isMine === true) {
         clickedSqr.isRevealed = true;
         lose();
@@ -82,7 +71,7 @@ function handleClick(evt) {
         if (clickedSqr.adjMineCount === 0) {
             flood(clickedSqr);
         }
-    }; // if mine=false && adjMineCount = 0 => reveal(); flood();
+    };
 
     render();
 }
@@ -90,27 +79,23 @@ function handleRightClick(evt) {
     let idSplit = evt.target.id.split(" ");
     let rowIdx = idSplit[0].replace("r", "");
     let colIdx = idSplit[1].replace("c", "");
-    let flagShow = document.getElementById(`r${rowIdx} c${colIdx}`);
-    if (board[rowIdx][colIdx].isRevealed === true) return;
-    if (board[rowIdx][colIdx].isFlagged === false) {
+    if (board[rowIdx][colIdx].isRevealed) return;
+    if (!board[rowIdx][colIdx].isFlagged) {
         board[rowIdx][colIdx].isFlagged = true;
     } else {
         board[rowIdx][colIdx].isFlagged = false;
     };
-
     render();
 }
-
 
 function lose() {
     board.forEach(function (rowArr, rowIdx) {
         rowArr.forEach(function (square, colIdx) {
+            square.isFlagged = false;
             square.isRevealed = true;
         });
-
     });
 }
-
 
 function getAdjSquares(rowIdx, colIdx) {
     const adjSquares = [];
@@ -139,9 +124,7 @@ function calcAdjMines(square, rowIdx, colIdx) {
 }
 
 function flood(clickedSqr) {
-    // const adjSquares = getAdjSquares(rowIdx, colIdx);
     console.log(clickedSqr.adjSquares);
-    // return adjSquares;
     clickedSqr.isRevealed = true;
     clickedSqr.isFlagged = false;
     if (clickedSqr.adjMineCount === 0) {
@@ -155,8 +138,7 @@ function generateBombs() {
     while (MINE_COUNT > 0) {
         let rndRow = Math.floor(Math.random() * BOARD_ROWS);
         let rndCol = Math.floor(Math.random() * BOARD_COLS);
-        //    console.log(rndRow,rndCol);
-        if (board[rndRow][rndCol].isMine === false) {
+        if (!board[rndRow][rndCol].isMine) {
             board[rndRow][rndCol].isMine = true;
             MINE_COUNT--;
         }
