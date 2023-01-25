@@ -75,13 +75,13 @@ button {
 }
 
 .bomb{
-    background-image: url('/images/bomb.png');
+    background-image: url('../images/bomb.png');
     background-size: contain;
     color: rgba(0, 0, 0, 0);
 }
 
 .flagged {
-    background-image: url('/images/flag.png');
+    background-image: url('../images/flag.png');
     background-size: contain;
     color: rgba(0, 0, 0, 0) !important;
 }
