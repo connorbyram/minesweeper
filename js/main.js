@@ -161,20 +161,6 @@ function render () {
                     };
                 }
             };
-            
-            // if (square.isRevealed === false) {
-            //     document.getElementById(`r${rowIdx} c${colIdx}`).classList.add('covered');
-            //     // return; 
-            // } else (if.isRevealed === true){
-            //     if (square.isMine === true) {
-            //         document.getElementById(`r${rowIdx} c${colIdx}`).classList.add('bomb');
-            //     } else {
-            //         document.getElementById(`r${rowIdx} c${colIdx}`).classList.add('revealed');
-            //     }
-            // };
-            // if (square.isRevealed === true) {
-            //     document.getElementById(`r${rowIdx} c${colIdx}`).classList.add('revealed');
-            // };
         });
     })
 }
