@@ -57,17 +57,6 @@ function init() {
             board[rowIdx].push(new Square(rowIdx, colIdx))
         };
 }
-    // board.forEach(function(rowArr, rowIdx) {
-    //     rowArr.forEach(function(square, colIdx) {
-    //        let sqr = board[rowIdx][colIdx];
-    //        sqr.isFlagged = false;
-    //        sqr.isMine = false;
-    //        sqr.isRevealed = false;
-    //        sqr.adjMineCount = 0;
-    //     //    square.isRevealed = false;
-
-    //     });
-    // });
 
     generateBombs ();
     board.forEach(function(rowArr, rowIdx) {
@@ -90,7 +79,10 @@ function handleClick(evt) {
     };
     if (board[rowIdx][colIdx].isMine === false) {
         board[rowIdx][colIdx].isRevealed = true;
-        // reveal();
+        if (board[rowIdx][colIdx].adjMineCount === 0) {
+            flood(5, 5);
+            // console.log('empty');
+        }
     }; // if mine=false && adjMineCount = 0 => reveal(); flood();
 
     render();
@@ -110,13 +102,16 @@ function handleRightClick(evt) {
     render();
 }
 
+
 function lose() {
     board.forEach(function(rowArr, rowIdx) {
         rowArr.forEach(function(square, colIdx) {
             square.isRevealed = true;
         });
+        
     });
 }
+
 
 function getAdjSquares(rowIdx, colIdx) {
     const adjSquares = [];
@@ -131,7 +126,8 @@ function getAdjSquares(rowIdx, colIdx) {
     return adjSquares;
 }
 
-function calcAdjMines (rowIdx, colIdx) {
+
+function calcAdjMines(rowIdx, colIdx) {
     const homeSquare = board[rowIdx][colIdx];
     const adjSquares = getAdjSquares(rowIdx,colIdx);
     adjSquares.forEach(function(adjSquare) {
@@ -143,6 +139,18 @@ function calcAdjMines (rowIdx, colIdx) {
         document.getElementById(`r${rowIdx} c${colIdx}`).innerHTML = `${homeSquare.adjMineCount}`;
     }
     return adjSquares;
+}
+
+function flood(rowIdx, colIdx) {
+    // const homeSquare = board[rowIdx][colIdx];
+    const adjSquares = getAdjSquares(rowIdx, colIdx);
+    console.log(adjSquares);
+    // return adjSquares;
+    adjSquares.forEach(function(adjSquare) {
+        if (adjSquare.isMine === false) {
+            adjSquare.isRevealed = true;
+        };
+    });
 }
 
 function generateBombs () {
