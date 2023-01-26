@@ -2,8 +2,8 @@
 const BOARD_ROWS = 16;
 const BOARD_COLS = 16;
 let MINE_COUNT = 40;
-const flag = 'images/flag.png'
-const bomb = 'images/bomb.png'
+const flag = 'assets/images/flag.png'
+const bomb = 'assets/images/bomb.png'
 
 /*----- app's state (variables) -----*/
 let board;
@@ -75,7 +75,7 @@ function handleClick(evt) {
     let rowIdx = idSplit[0].replace("r", "");
     let colIdx = idSplit[1].replace("c", "");
     let clickedSqr = board[rowIdx][colIdx];
-    if (clickedSqr.isFlagged) return;
+    if (win === true || loss === true || clickedSqr.isFlagged) return;
     if (clickedSqr.isMine) {
         clickedSqr.isRevealed = true;
         loss = true;
@@ -92,7 +92,7 @@ function handleRightClick(evt) {
     let idSplit = evt.target.id.split(" ");
     let rowIdx = idSplit[0].replace("r", "");
     let colIdx = idSplit[1].replace("c", "");
-    if (board[rowIdx][colIdx].isRevealed) return;
+    if (win === true || loss === true || board[rowIdx][colIdx].isRevealed) return;
     if (!board[rowIdx][colIdx].isFlagged) {
         board[rowIdx][colIdx].isFlagged = true;
         flagCount--;
