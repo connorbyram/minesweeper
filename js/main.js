@@ -1,7 +1,7 @@
 /*----- constants -----*/
 const BOARD_ROWS = 16;
 const BOARD_COLS = 16;
-let MINE_COUNT = 5;
+let MINE_COUNT = 40;
 const flag = 'images/flag.png'
 const bomb = 'images/bomb.png'
 
