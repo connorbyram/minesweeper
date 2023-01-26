@@ -68,26 +68,4 @@ button {
     justify-content: center;
     padding: 5px;
     cursor: pointer;
-
 }
-
-/* .covered {
-    background-color: white;
-    color:rgba(0, 0, 0, 0);
-}
-
-.revealed {
-    color: black !important; 
-}
-
-.bomb{
-    background-image: url('../images/bomb.png');
-    background-size: contain;
-    color: rgba(0, 0, 0, 0);
-}
-
-.flagged {
-    background-image: url('../images/flag.png');
-    background-size: contain;
-    color: rgba(0, 0, 0, 0) !important;
-} */

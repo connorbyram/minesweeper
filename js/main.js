@@ -2,6 +2,7 @@
 const BOARD_ROWS = 16;
 const BOARD_COLS = 16;
 let MINE_COUNT = 40;
+let FLAG_COUNT = MINE_COUNT;
 const flag = 'images/flag.png'
 const bomb = 'images/bomb.png'
 
@@ -15,6 +16,7 @@ let win;
 let boardEl = document.getElementById('board');
 let squareEl = document.querySelector(`board > div`)
 let resetEl = document.querySelector('button')
+let flgCountEl = document.getElementById('flag-count')
 
 /*----- classes -----*/
 class Square {
@@ -39,7 +41,6 @@ resetEl.addEventListener('click', init);
 
 /*----- functions -----*/
 init();
-console.log(board);
 function init() {
     board = [];
     for (let rowIdx = 0; rowIdx < BOARD_ROWS; rowIdx++) {
@@ -64,8 +65,8 @@ function handleClick(evt) {
     let rowIdx = idSplit[0].replace("r", "");
     let colIdx = idSplit[1].replace("c", "");
     let clickedSqr = board[rowIdx][colIdx];
-    if (clickedSqr.isFlagged === true) return;
-    if (clickedSqr.isMine === true) {
+    if (clickedSqr.isFlagged) return;
+    if (clickedSqr.isMine) {
         clickedSqr.isRevealed = true;
         lose();
     } else {
@@ -84,6 +85,7 @@ function handleRightClick(evt) {
     if (board[rowIdx][colIdx].isRevealed) return;
     if (!board[rowIdx][colIdx].isFlagged) {
         board[rowIdx][colIdx].isFlagged = true;
+        flgCountEl.innerHTML = `${FLAG_COUNT}`;
     } else {
         board[rowIdx][colIdx].isFlagged = false;
     };
@@ -137,12 +139,13 @@ function flood(clickedSqr) {
 }
 
 function generateBombs() {
-    while (MINE_COUNT > 0) {
+    let mineCount = MINE_COUNT;
+    while (mineCount > 0) {
         let rndRow = Math.floor(Math.random() * BOARD_ROWS);
         let rndCol = Math.floor(Math.random() * BOARD_COLS);
         if (!board[rndRow][rndCol].isMine) {
             board[rndRow][rndCol].isMine = true;
-            MINE_COUNT--;
+            mineCount--;
         }
     };
 }
@@ -165,9 +168,9 @@ function render() {
                     if (square.isMine) {
                         squareDiv.style.backgroundImage = `url(${bomb})`;
                     };
+                    squareDiv.style.color = "rgba(0, 0, 0, 1)";
                     if (square.adjMineCount > 0) {
                         squareDiv.style.backgroundColor = 'white';
-                        squareDiv.style.color = "rgba(0, 0, 0, 1)"
                         document.getElementById(`r${rowIdx} c${colIdx}`).innerHTML = `${square.adjMineCount}`;
                     };
                 }
