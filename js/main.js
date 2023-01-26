@@ -71,7 +71,6 @@ function init() {
 
 
 function handleClick(evt) {
-    // setInterval(setTime, 1000);
     let idSplit = evt.target.id.split(" ");
     let rowIdx = idSplit[0].replace("r", "");
     let colIdx = idSplit[1].replace("c", "");
@@ -172,6 +171,8 @@ function generateBombs() {
 
 function startTimer() {
     setInterval(setTime, 1000);
+    const audio = document.getElementById('fugue');
+    audio.play();
 }
 
 function setTime() {
