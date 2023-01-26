@@ -8,7 +8,10 @@ const bomb = 'images/bomb.png'
 /*----- app's state (variables) -----*/
 let board;
 let win;
+let loss;
 let flagCount = MINE_COUNT;
+let totalSeconds = 0;
+
 
 
 
@@ -17,6 +20,8 @@ let boardEl = document.getElementById('board');
 let squareEl = document.querySelector(`board > div`)
 let resetEl = document.querySelector('button')
 let flgCountEl = document.getElementById('flag-count')
+let minutesEl = document.getElementById("minutes");
+let secondsEl = document.getElementById("seconds");
 
 /*----- classes -----*/
 class Square {
@@ -35,8 +40,10 @@ class Square {
 
 /*----- event listeners -----*/
 boardEl.addEventListener('click', handleClick);
+boardEl.addEventListener('click', startTimer, {once: true});
 boardEl.addEventListener('contextmenu', handleRightClick);
 resetEl.addEventListener('click', init);
+
 
 
 /*----- functions -----*/
@@ -45,6 +52,8 @@ function init() {
     board = [];
     flagCount = MINE_COUNT;
     win = false;
+    loss = false;
+    totalSeconds = 0;
     for (let rowIdx = 0; rowIdx < BOARD_ROWS; rowIdx++) {
         board[rowIdx] = [];
         for (let colIdx = 0; colIdx < BOARD_COLS; colIdx++) {
@@ -60,7 +69,9 @@ function init() {
     render();
 }
 
+
 function handleClick(evt) {
+    // setInterval(setTime, 1000);
     let idSplit = evt.target.id.split(" ");
     let rowIdx = idSplit[0].replace("r", "");
     let colIdx = idSplit[1].replace("c", "");
@@ -68,7 +79,7 @@ function handleClick(evt) {
     if (clickedSqr.isFlagged) return;
     if (clickedSqr.isMine) {
         clickedSqr.isRevealed = true;
-        lose();
+        loss = true;
     } else {
         clickedSqr.isRevealed = true;
         if (clickedSqr.adjMineCount === 0) {
@@ -134,9 +145,6 @@ function calcAdjMines(square, rowIdx, colIdx) {
             square.adjMineCount = square.adjMineCount + 1;
         };
     });
-    if (square.adjMineCount > 0) {
-        // document.getElementById(`r${rowIdx} c${colIdx}`).innerHTML = `${square.adjMineCount}`;
-    }
 }
 
 function flood(clickedSqr) {
@@ -162,12 +170,33 @@ function generateBombs() {
     };
 }
 
+function startTimer() {
+    setInterval(setTime, 1000);
+}
+
+function setTime() {
+    if (win === true || loss === true ) return;
+    ++totalSeconds;
+    secondsEl.innerHTML = pad(totalSeconds % 60);
+    minutesEl.innerHTML = pad(parseInt(totalSeconds / 60));
+}
+
+function pad(val) {
+    let valString = val + "";
+    if (valString.length < 2) {
+      return "0" + valString;
+    } else {
+      return valString;
+    }
+  }
+
 
 function render() {
     board.forEach(function (rowArr, rowIdx) {
         rowArr.forEach(function (square, colIdx) {
             flgCountEl.innerHTML = `${flagCount}`;
             let squareDiv = document.getElementById(`r${rowIdx} c${colIdx}`);
+            if (loss === true) lose();
             checkWin();
             if (win === true) {
                 if (square.isMine) square.isFlagged = true;
