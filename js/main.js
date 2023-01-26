@@ -2,13 +2,13 @@
 const BOARD_ROWS = 16;
 const BOARD_COLS = 16;
 let MINE_COUNT = 40;
-let FLAG_COUNT = MINE_COUNT;
 const flag = 'images/flag.png'
 const bomb = 'images/bomb.png'
 
 /*----- app's state (variables) -----*/
 let board;
 let win;
+let flagCount = MINE_COUNT;
 
 
 
@@ -43,6 +43,7 @@ resetEl.addEventListener('click', init);
 init();
 function init() {
     board = [];
+    flagCount = MINE_COUNT;
     for (let rowIdx = 0; rowIdx < BOARD_ROWS; rowIdx++) {
         board[rowIdx] = [];
         for (let colIdx = 0; colIdx < BOARD_COLS; colIdx++) {
@@ -50,6 +51,7 @@ function init() {
         };
     }
 
+    
     generateBombs();
     board.forEach(function (rowArr, rowIdx) {
         rowArr.forEach(function (square, colIdx) {
@@ -85,9 +87,10 @@ function handleRightClick(evt) {
     if (board[rowIdx][colIdx].isRevealed) return;
     if (!board[rowIdx][colIdx].isFlagged) {
         board[rowIdx][colIdx].isFlagged = true;
-        flgCountEl.innerHTML = `${FLAG_COUNT}`;
+        flagCount--;
     } else {
         board[rowIdx][colIdx].isFlagged = false;
+        flagCount++;
     };
     render();
 }
@@ -154,6 +157,7 @@ function generateBombs() {
 function render() {
     board.forEach(function (rowArr, rowIdx) {
         rowArr.forEach(function (square, colIdx) {
+            flgCountEl.innerHTML = `${flagCount}`;
             let squareDiv = document.getElementById(`r${rowIdx} c${colIdx}`);
             if (square.isFlagged) {
                 squareDiv.style.backgroundImage = `url(${flag})`;
@@ -169,9 +173,10 @@ function render() {
                         squareDiv.style.backgroundImage = `url(${bomb})`;
                     };
                     squareDiv.style.color = "rgba(0, 0, 0, 1)";
-                    if (square.adjMineCount > 0) {
+                    squareDiv.innerHTML = `${square.adjMineCount}`;
+                    if (square.adjMineCount === 0) {
                         squareDiv.style.backgroundColor = 'white';
-                        document.getElementById(`r${rowIdx} c${colIdx}`).innerHTML = `${square.adjMineCount}`;
+                        squareDiv.innerHTML = ``;
                     };
                 }
             };
