@@ -1,7 +1,7 @@
 /*----- constants -----*/
 const BOARD_ROWS = 16;
 const BOARD_COLS = 16;
-let MINE_COUNT = 40;
+let MINE_COUNT = 5;
 const flag = 'images/flag.png'
 const bomb = 'images/bomb.png'
 
@@ -44,21 +44,19 @@ init();
 function init() {
     board = [];
     flagCount = MINE_COUNT;
+    win = false;
     for (let rowIdx = 0; rowIdx < BOARD_ROWS; rowIdx++) {
         board[rowIdx] = [];
         for (let colIdx = 0; colIdx < BOARD_COLS; colIdx++) {
             board[rowIdx].push(new Square(rowIdx, colIdx))
         };
     }
-
-    
     generateBombs();
     board.forEach(function (rowArr, rowIdx) {
         rowArr.forEach(function (square, colIdx) {
             calcAdjMines(square, rowIdx, colIdx);
         });
     });
-
     render();
 }
 
@@ -102,6 +100,17 @@ function lose() {
             square.isRevealed = true;
         });
     });
+}
+function checkWin () {
+    let hiddenCount = 0;
+    board.forEach(function (rowArr, rowIdx) {
+            rowArr.forEach(function (square, colIdx){
+                if (!square.isRevealed) {
+                    hiddenCount = hiddenCount + 1
+                }
+            });
+        });
+    if (hiddenCount === MINE_COUNT) win = true; 
 }
 
 function getAdjSquares(rowIdx, colIdx) {
@@ -159,6 +168,10 @@ function render() {
         rowArr.forEach(function (square, colIdx) {
             flgCountEl.innerHTML = `${flagCount}`;
             let squareDiv = document.getElementById(`r${rowIdx} c${colIdx}`);
+            checkWin();
+            if (win === true) {
+                if (square.isMine) square.isFlagged = true;
+            };
             if (square.isFlagged) {
                 squareDiv.style.backgroundImage = `url(${flag})`;
                 squareDiv.style.color = "rgba(0, 0, 0, 0)";
