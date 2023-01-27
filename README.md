@@ -9,7 +9,7 @@ This game is the first project of my **General Assembly Software Engineering Imm
 
 _Soundtrack by **Dungeon Fugues**_
 
-### **Gameplay**
+### **Gameplay**:
 Click any square on the board to begin. 
 
 - If a bomb is clicked, the player instantly loses

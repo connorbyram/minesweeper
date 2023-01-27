@@ -105,7 +105,6 @@ function handleRightClick(evt) {
 }
 
 function lose() {
-    // startConfetti();
     board.forEach(function (rowArr, rowIdx) {
         rowArr.forEach(function (square, colIdx) {
             square.isFlagged = false;

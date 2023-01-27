@@ -69,7 +69,7 @@ button {
     border-top: 0.2vmin solid #FF827A;
     border-right: 0.2vmin solid #9F0F05;
     border-bottom: 0.2vmin solid #9F0F05;
-    transition: 150ms;
+    transition: 180ms;
 }
 
 button:hover {
@@ -78,7 +78,7 @@ button:hover {
 }
 
 button:active {
-    transform: translate(0, -1px);
+    transform: translate(0, 0px);
     box-shadow: 2px 3px 2px 0px rgba(0, 0, 0, 0.7);
 }
 
@@ -89,7 +89,6 @@ button:active {
     grid-template-columns: 
         1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 
         1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    margin: 12px 0;
 }
 
 #board > div {
