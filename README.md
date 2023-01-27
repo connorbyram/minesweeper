@@ -46,7 +46,7 @@ Click any square on the board to begin.
 - If a bomb is clicked, the player instantly loses
 - If an empty square is clicked, the number of adjacent bombs is displayed
 - If an empty square with no adjacent bombs is clicked, it will reveal all adjacent, empty squares
-- If a revealed adjacent square also has no adjacent bombs, it will reveal all adjacent empty squares
+- If a revealed adjacent square also has no adjacent bombs, it will reveal all adjacent, empty squares
 
 The player wins by revealing all empty squares.
 
