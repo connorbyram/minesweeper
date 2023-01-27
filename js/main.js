@@ -1,7 +1,7 @@
 /*----- constants -----*/
 const BOARD_ROWS = 16;
 const BOARD_COLS = 16;
-let MINE_COUNT = 3;
+let MINE_COUNT = 40;
 ;
 const hidden = 'assets/images/empty.jpg'
 const flag = 'assets/images/flag.jpg'
