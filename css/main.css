@@ -47,8 +47,8 @@ body {
 }
 
 #hud > div {
-    padding: 10px 15px;
-    font-size: 16px;
+    padding: 10px 1.1vmin;
+    font-size: 2vmin;
     border-top: 0.2vmin solid white;
     border-right: 0.2vmin solid black;
     border-bottom: 0.2vmin solid black;
@@ -56,9 +56,9 @@ body {
 }
 
 button {
-    padding: 10px 30px;
+    padding: 10px 1.5vmin;
     font-family: 'Press Start 2P', sans-serif;
-    font-size: 16px;
+    font-size: 2vmin;
     color: white;
     background-color: #E4170A;
     border-top: 0.2vmin solid #FF827A;

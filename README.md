@@ -43,3 +43,4 @@ The player wins by revealing all empty squares.
 - Difficulty selector
 - Leaderboard
 - A less-cheesy win animation
+- Mobile optimization
