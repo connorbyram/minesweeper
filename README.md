@@ -2,9 +2,10 @@
 
 ## Introduction
 ---
-Bomb Brigade is an alternative version of **Minesweeper**.
+Bomb Brigade is an alternative version of **Minesweeper**. It is the first project I created for my **General Assembly Software Engineering Immersive** program.
 
-This game is the first project of my **General Assembly Software Engineering Immersive** program.
+<br>
+<br>
 
 _Soundtrack by **Dungeon Fugues**_
 
@@ -45,6 +46,7 @@ Click any square on the board to begin.
 - If a bomb is clicked, the player instantly loses
 - If an empty square is clicked, the number of adjacent bombs is displayed
 - If an empty square with no adjacent bombs is clicked, it will reveal all adjacent, empty squares
+- If a revealed adjacent square also has no adjacent bombs, it will reveal all adjacent empty squares
 
 The player wins by revealing all empty squares.
 
