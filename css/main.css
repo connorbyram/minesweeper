@@ -25,11 +25,6 @@ body {
 #game-info {
     width: 57.6vmin;
     text-align: center;
-    /* border: 2px solid black; */
-    /* background-image: url('../assets/images/mine.jpg'); */
-    background-size: 2vmin;
-    padding: 0px 0px;
-    /* margin-bottom: 20px; */
 }
 
 #gameheading {
@@ -42,13 +37,11 @@ body {
 }
 
 #hud {
-    margin-top: 5px;
+    margin-top: 8px;
     display: flex;
     width: 100%;
     justify-content: space-between;
     background-color: lightgray;
-    /* background-image: url('../assets/images/mine.jpg');
-    background-size: 2vmin; */
     border-left: 0.2vmin solid white;
     border-top: 0.2vmin solid white;
     border-right: 0.2vmin solid black;
@@ -58,18 +51,35 @@ body {
 
 #hud > div {
     font-size: 16px;
-    border: .1vmin solid black;
-    background-color: white;
+    border-left: 0.2vmin solid white;
+    border-top: 0.2vmin solid white;
+    border-right: 0.2vmin solid black;
+    border-bottom: 0.2vmin solid black;
     padding: 10px 15px;
 }
 
 button {
-    background-color: white;
+    background-color: #E4170A;
+    color: white;
     font-family: 'Press Start 2P', sans-serif;
     font-size: 16px;
     padding: 10px 30px;
-    border-radius: 15px;
     cursor: pointer; 
+    border-left: 0.2vmin solid #FF827A;
+    border-top: 0.2vmin solid #FF827A;
+    border-right: 0.2vmin solid #9F0F05;
+    border-bottom: 0.2vmin solid #9F0F05;
+    transition: 150ms;
+}
+
+button:hover {
+    transform: translate(0, -2px);
+    box-shadow: 3px 5px 4px 0px rgba(0, 0, 0, 0.5);
+}
+
+button:active {
+    transform: translate(0, -1px);
+    box-shadow: 2px 3px 2px 0px rgba(0, 0, 0, 0.7);
 }
 
 #board {
@@ -79,7 +89,7 @@ button {
     grid-template-columns: 
         1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 
         1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    margin: 15px 0;
+    margin: 12px 0;
 }
 
 #board > div {
