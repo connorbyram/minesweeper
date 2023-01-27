@@ -2,12 +2,42 @@
 
 ## Introduction
 ---
-### **Background**:
 Bomb Brigade is an alternative version of **Minesweeper**.
 
 This game is the first project of my **General Assembly Software Engineering Immersive** program.
 
 _Soundtrack by **Dungeon Fugues**_
+
+<br>
+
+## Technologies Used
+---
+- JavaScript
+- HTML
+- CSS
+- Ableton
+
+<br>
+
+## Images
+---
+![](/assets/images/empty.jpg)
+![](/assets/images/flag.jpg)
+![](/assets/images/mine.jpg)
+<br>
+<br>
+![](/assets/images/board.jpeg)
+
+
+<br>
+
+## Getting Started
+---
+[View Project Planning](/assets/project-planning)
+<br />
+[Play Minesweeper](https://connorbyram.github.io/minesweeper/)
+
+<br>
 
 ### **Gameplay**:
 Click any square on the board to begin. 
@@ -18,25 +48,7 @@ Click any square on the board to begin.
 
 The player wins by revealing all empty squares.
 
-## Technologies Used
----
-- JavaScript
-- HTML
-- CSS
-- Ableton
-
-## Images
----
-![](/assets/images/empty.jpg)
-![](/assets/images/flag.jpg)
-![](/assets/images/mine.jpg)
-
-
-## Getting Started
----
-[View Project Planning](/assets/project-planning)
-<br />
-[Play Minesweeper](https://connorbyram.github.io/minesweeper/)
+<br>
 
 ## Future Improvements
 ---
