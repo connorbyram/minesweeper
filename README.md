@@ -25,6 +25,12 @@ The player wins by revealing all empty squares.
 - CSS
 - Ableton
 
+## Images
+---
+![](/assets/images/empty.jpg)
+![](/assets/images/flag.jpg)
+![](/assets/images/mine.jpg)
+
 
 ## Getting Started
 ---
@@ -36,3 +42,4 @@ The player wins by revealing all empty squares.
 ---
 - Difficulty selector
 - Leaderboard
+- A less-cheesy win animation

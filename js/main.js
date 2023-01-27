@@ -1,19 +1,19 @@
 /*----- constants -----*/
 const BOARD_ROWS = 16;
 const BOARD_COLS = 16;
-let MINE_COUNT = 40;
+let MINE_COUNT = 3;
+;
 const hidden = 'assets/images/empty.jpg'
 const flag = 'assets/images/flag.jpg'
 const bomb = 'assets/images/mine.jpg'
+const jsConfetti = new JSConfetti();
 
 /*----- app's state (variables) -----*/
 let board;
 let win;
 let loss;
 let flagCount = MINE_COUNT;
-let totalSeconds = 0;
-
-
+let totalSeconds;
 
 
 /*----- cached element references -----*/
@@ -33,8 +33,7 @@ class Square {
         this.adjMineCount = 0;
         this.rowIdx = rowIdx;
         this.colIdx = colIdx;
-    }
-
+    }   
     render() {}
 }
 
@@ -44,7 +43,6 @@ boardEl.addEventListener('click', handleClick);
 boardEl.addEventListener('click', startTimer, {once: true});
 boardEl.addEventListener('contextmenu', handleRightClick);
 resetEl.addEventListener('click', init);
-
 
 
 /*----- functions -----*/
@@ -70,6 +68,39 @@ function init() {
     render();
 }
 
+function generateBombs() {
+    let mineCount = MINE_COUNT;
+    while (mineCount > 0) {
+        let rndRow = Math.floor(Math.random() * BOARD_ROWS);
+        let rndCol = Math.floor(Math.random() * BOARD_COLS);
+        if (!board[rndRow][rndCol].isMine) {
+            board[rndRow][rndCol].isMine = true;
+            mineCount--;
+        }
+    }
+}
+
+function getAdjSquares(rowIdx, colIdx) {
+    const adjSquares = [];
+    for (let rowOffset = -1; rowOffset < 2; rowOffset++) {
+        for (let colOffset = -1; colOffset < 2; colOffset++) {
+            const adjRow = rowIdx + rowOffset;
+            const adjCol = colIdx + colOffset;
+            if (!(adjRow === rowIdx && adjCol === colIdx) && adjRow >= 0 && adjRow < board.length && adjCol >= 0 && adjCol < board[0].length)
+                adjSquares.push(board[adjRow][adjCol]);
+        }
+    };
+    return adjSquares;
+}
+
+function calcAdjMines(square, rowIdx, colIdx) {
+    square.adjSquares = getAdjSquares(rowIdx, colIdx);
+    square.adjSquares.forEach(function (adjSquare) {
+        if (adjSquare.isMine) {
+            square.adjMineCount = square.adjMineCount + 1;
+        };
+    });
+}
 
 function handleClick(evt) {
     let idSplit = evt.target.id.split(" ");
@@ -86,9 +117,9 @@ function handleClick(evt) {
             flood(clickedSqr);
         }
     };
-
     render();
 }
+
 function handleRightClick(evt) {
     let idSplit = evt.target.id.split(" ");
     let rowIdx = idSplit[0].replace("r", "");
@@ -102,72 +133,6 @@ function handleRightClick(evt) {
         flagCount++;
     };
     render();
-}
-
-function lose() {
-    board.forEach(function (rowArr, rowIdx) {
-        rowArr.forEach(function (square, colIdx) {
-            square.isFlagged = false;
-            square.isRevealed = true;
-        });
-    });
-}
-function checkWin () {
-    let hiddenCount = 0;
-    board.forEach(function (rowArr, rowIdx) {
-            rowArr.forEach(function (square, colIdx){
-                if (!square.isRevealed) {
-                    hiddenCount = hiddenCount + 1
-                }
-            });
-        });
-    if (hiddenCount === MINE_COUNT) win = true; 
-}
-
-function getAdjSquares(rowIdx, colIdx) {
-    const adjSquares = [];
-    for (let rowOffset = -1; rowOffset < 2; rowOffset++) {
-        for (let colOffset = -1; colOffset < 2; colOffset++) {
-            const adjRow = rowIdx + rowOffset;
-            const adjCol = colIdx + colOffset;
-            if (!(adjRow === rowIdx && adjCol === colIdx) && adjRow >= 0 && adjRow < board.length && adjCol >= 0 && adjCol < board[0].length)
-                adjSquares.push(board[adjRow][adjCol]);
-        }
-    };
-    return adjSquares;
-}
-
-
-function calcAdjMines(square, rowIdx, colIdx) {
-    square.adjSquares = getAdjSquares(rowIdx, colIdx);
-    square.adjSquares.forEach(function (adjSquare) {
-        if (adjSquare.isMine === true) {
-            square.adjMineCount = square.adjMineCount + 1;
-        };
-    });
-}
-
-function flood(clickedSqr) {
-    console.log(clickedSqr.adjSquares);
-    clickedSqr.isRevealed = true;
-    clickedSqr.isFlagged = false;
-    if (clickedSqr.adjMineCount === 0) {
-        clickedSqr.adjSquares.forEach(function (adjSquare) {
-            if (!adjSquare.isMine && !adjSquare.isRevealed) flood(adjSquare); 
-        });   
-    }
-}
-
-function generateBombs() {
-    let mineCount = MINE_COUNT;
-    while (mineCount > 0) {
-        let rndRow = Math.floor(Math.random() * BOARD_ROWS);
-        let rndCol = Math.floor(Math.random() * BOARD_COLS);
-        if (!board[rndRow][rndCol].isMine) {
-            board[rndRow][rndCol].isMine = true;
-            mineCount--;
-        }
-    };
 }
 
 function startTimer() {
@@ -187,11 +152,56 @@ function pad(val) {
     let valString = val + "";
     if (valString.length < 2) {
       return "0" + valString;
-    } else {
-      return valString;
-    }
-  }
+    } else return valString;
+    
+}
 
+function flood(clickedSqr) {
+    console.log(clickedSqr.adjSquares);
+    clickedSqr.isRevealed = true;
+    clickedSqr.isFlagged = false;
+    if (clickedSqr.adjMineCount === 0) {
+        clickedSqr.adjSquares.forEach(function (adjSquare) {
+            if (!adjSquare.isMine && !adjSquare.isRevealed) flood(adjSquare); 
+        });   
+    }
+}
+
+function checkWin () {
+    let hiddenCount = 0;
+    board.forEach(function (rowArr, rowIdx) {
+            rowArr.forEach(function (square, colIdx){
+                if (!square.isRevealed) {
+                    hiddenCount = hiddenCount + 1
+                }
+            });
+        });
+    if (hiddenCount === MINE_COUNT) win = true; 
+}
+
+function confettiWin() {
+    jsConfetti.addConfetti({
+        confettiColors: [
+            '#E4170A', 
+            '#439194', 
+            '#004AAD', 
+            '#7ED957', 
+            '#FFDE59', 
+            '#FF914D',
+          ],
+        confettiRadius: 8,
+        confettiNumber: 20,
+    })
+}
+
+function lose() {
+    board.forEach(function (rowArr, rowIdx) {
+        rowArr.forEach(function (square, colIdx) {
+            square.isFlagged = false;
+            square.isRevealed = true;
+        })
+    })
+}
 
 function render() {
     board.forEach(function (rowArr, rowIdx) {
@@ -202,6 +212,7 @@ function render() {
             checkWin();
             if (win === true) {
                 if (square.isMine) square.isFlagged = true;
+                confettiWin();
             };
             if (square.isFlagged) {
                 squareDiv.style.backgroundImage = `url(${flag})`;

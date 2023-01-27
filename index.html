@@ -7,22 +7,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <title>Minesweeper</title>
-    <link rel="stylesheet" href="css/main.css">
     <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
+    <title>Minesweeper</title>
+    <link rel="icon" type="image/x-icon" href="./assets/images/mine.jpg">
+    <link rel="stylesheet" href="css/main.css">
     <script defer src="js/main.js"></script>
 </head>
+
 <body>
-    <script>
-        const jsConfetti = new JSConfetti();
-        function confettiFY(){
-            jsConfetti.addConfetti();
-        }
-        document.querySelector("button").addEventListener("click", confettiFY);
-    </script>
     <section id="audio">
         <audio id="fugue" src="./assets/audio/Dungeon Fugue 1.mp3" loop></audio>
     </section>
+
     <section id="game-info">
         <img id="gameheading"src="./assets/images/gameheading.jpeg" alt="">
         <div id="hud">
@@ -306,7 +302,6 @@
         <div id="r15 c13"></div>
         <div id="r15 c14"></div>
         <div id="r15 c15"></div>
-
     </section>
 </body>
 </html>
