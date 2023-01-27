@@ -7,10 +7,12 @@
 body {
     height: 100vh;
     width: 100vw;
+    font-family: 'Press Start 2P', sans-serif;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    margin: 2vh 0;
     align-items: center;
+    background-color:#545454;
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
      -khtml-user-select: none; /* Konqueror HTML */
@@ -21,28 +23,50 @@ body {
 }
 
 #game-info {
-    width: 75vw;
+    width: 57.6vmin;
     text-align: center;
-    border: 2px solid black;
-    padding: 20px 30px;
-    margin-bottom: 20px;
+    /* border: 2px solid black; */
+    /* background-image: url('../assets/images/mine.jpg'); */
+    background-size: 2vmin;
+    padding: 0px 0px;
+    /* margin-bottom: 20px; */
+}
+
+#gameheading {
+    width: 100%;
+    height: auto;
+    border-left: 0.2vmin solid #FF827A;
+    border-top: 0.2vmin solid #FF827A;
+    border-right: 0.2vmin solid #9F0F05;
+    border-bottom: 0.2vmin solid #9F0F05;
 }
 
 #hud {
+    margin-top: 5px;
     display: flex;
-    width: 75vw;
+    width: 100%;
     justify-content: space-between;
-    border: 2px solid black;
+    background-color: lightgray;
+    /* background-image: url('../assets/images/mine.jpg');
+    background-size: 2vmin; */
+    border-left: 0.2vmin solid white;
+    border-top: 0.2vmin solid white;
+    border-right: 0.2vmin solid black;
+    border-bottom: 0.2vmin solid black;
     padding: 20px 20px; 
 }
 
 #hud > div {
-    border: 2px solid black;
+    font-size: 16px;
+    border: .1vmin solid black;
+    background-color: white;
     padding: 10px 15px;
 }
 
 button {
     background-color: white;
+    font-family: 'Press Start 2P', sans-serif;
+    font-size: 16px;
     padding: 10px 30px;
     border-radius: 15px;
     cursor: pointer; 
@@ -52,20 +76,22 @@ button {
     height: auto;
     width: auto;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    border: 1px solid black;
-    margin: 20px 0;
+    grid-template-columns: 
+        1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 
+        1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    margin: 15px 0;
 }
 
 #board > div {
-    border: 1px solid black;
+    border: .2vmin solid black;
     background-color: none;
     background-size: contain;
-    height: 30px;
-    width: 30px;
+    height: 3.6vmin;
+    width: 3.6vmin;
+    font-size: 2vmin;
     display: flex;
     align-content: center;
     justify-content: center;
-    padding: 5px;
+    padding: .8vmin;
     cursor: pointer;
 }

@@ -2,8 +2,9 @@
 const BOARD_ROWS = 16;
 const BOARD_COLS = 16;
 let MINE_COUNT = 40;
-const flag = 'assets/images/flag.png'
-const bomb = 'assets/images/bomb.png'
+const hidden = 'assets/images/empty.jpg'
+const flag = 'assets/images/flag.jpg'
+const bomb = 'assets/images/mine.jpg'
 
 /*----- app's state (variables) -----*/
 let board;
@@ -204,21 +205,26 @@ function render() {
             };
             if (square.isFlagged) {
                 squareDiv.style.backgroundImage = `url(${flag})`;
-                squareDiv.style.color = "rgba(0, 0, 0, 0)";
+                squareDiv.style.color = 'rgba(0, 0, 0, 0)';
             } else {
-                squareDiv.style.backgroundImage = "none";
+                squareDiv.style.backgroundImage = 'none';
                 if (!square.isRevealed) {
-                    squareDiv.style.backgroundColor = "green";
-                    squareDiv.style.color = "rgba(0, 0, 0, 0)"
+                    squareDiv.style.backgroundImage = `url(${hidden})`;
+                    squareDiv.style.color = 'rgba(0, 0, 0, 0)';
+                    squareDiv.style.borderLeft = '0.2vmin solid #D9D9D9';
+                    squareDiv.style.borderTop = '0.2vmin solid #D9D9D9';
+                    squareDiv.style.borderRight = '0.2vmin solid black';
+                    squareDiv.style.borderBottom = '0.2vmin solid black';
                 } else {
-                    squareDiv.style.backgroundColor = "grey";
+                    squareDiv.style.backgroundColor = '#A6A6A6';
+                    squareDiv.style.border = '0.02px solid #545454';
                     if (square.isMine) {
                         squareDiv.style.backgroundImage = `url(${bomb})`;
                     };
-                    squareDiv.style.color = "rgba(0, 0, 0, 1)";
+                    squareDiv.style.color = 'rgba(0, 0, 0, 1)';
                     squareDiv.innerHTML = `${square.adjMineCount}`;
-                    if (square.adjMineCount === 0) {
-                        squareDiv.style.backgroundColor = 'white';
+                    if (square.adjMineCount === 0 || square.isMine) {
+                        squareDiv.style.backgroundColor = '#D9D9D9';
                         squareDiv.innerHTML = ``;
                     };
                 }
